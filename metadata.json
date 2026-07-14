@@ -1,0 +1,6 @@
+{
+  "name": "Modern Home",
+  "description": "پلتفرم واسطه‌گری مبلمان لوکس و مدیریت پورسانت نمایشگاه‌های مبل (Modern Home)",
+  "requestFramePermissions": ["identity-credentials-get"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
