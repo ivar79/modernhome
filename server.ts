@@ -44,7 +44,7 @@ if (!process.env.VERCEL) {
 
 const app = express();
 app.set("trust proxy", 1); // Trust first proxy (like AI Studio/Cloud Run ingress)
-const PORT = 3000;
+const PORT = parseInt(process.env.PORT || "3000", 10);
 
 app.use(express.json({ limit: "50mb" }));
 

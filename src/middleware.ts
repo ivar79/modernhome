@@ -1,12 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-export const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === "production" ? "" : "fallback_super_secret_jwt_key_please_change");
+export const JWT_SECRET = process.env.JWT_SECRET || "fallback_super_secret_jwt_key_please_change";
 if (!process.env.JWT_SECRET) {
-  if (process.env.NODE_ENV === "production") {
-    throw new Error("JWT_SECRET environment variable must be set in production.");
-  }
-  console.warn("WARNING: JWT_SECRET is not set. Using fallback for development only.");
+  console.warn("WARNING: JWT_SECRET is not set. Using fallback. Please set it in production for security.");
 }
 
 export function adminAuthMiddleware(req: Request, res: Response, next: NextFunction): any {
