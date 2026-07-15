@@ -1,10 +1,8 @@
 {
-  "platform": "node",
+  "app": "khane-mobl",
   "port": 3000,
-  "disks": [
-    {
-      "name": "furnitureshowroom-uploads",
-      "mountTo": "uploads"
-    }
-  ]
+  "build": {
+    "location": "iran"
+  },
+  "disks": []
 }

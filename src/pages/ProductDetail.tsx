@@ -4,6 +4,7 @@ import { Product, Showroom, Category } from "../types";
 import { ArrowRight, CheckCircle2, Store, Calendar, HelpCircle, PhoneCall, Heart, Star, Sparkles, MapPin, ShieldAlert, BadgeInfo, ShieldCheck, Scale, Percent, Layers } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useWishlist } from "../hooks/useWishlist";
+import { Helmet } from "react-helmet-async";
 
 function WishlistToggle({ productId }: { productId: string }) {
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -154,6 +155,14 @@ export default function ProductDetail() {
 
   return (
     <div className="bg-stone-50 min-h-screen text-stone-900 pt-28 pb-20 leading-relaxed">
+      <Helmet>
+        <title>{product.name} | گالری مبلمان خانه مبل</title>
+        <meta name="description" content={product.description || `خرید ${product.name} از نمایشگاه ${showroom.name} با بهترین کیفیت.`} />
+        <meta property="og:title" content={`${product.name} | گالری مبلمان خانه مبل`} />
+        <meta property="og:description" content={product.description || `خرید ${product.name} از نمایشگاه ${showroom.name} با بهترین کیفیت.`} />
+        {product.images && product.images.length > 0 && <meta property="og:image" content={product.images[0]} />}
+      </Helmet>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Bar: Back Link & Wishlist */}

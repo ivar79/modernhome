@@ -11,9 +11,21 @@ import { JWT_SECRET } from "./src/middleware.js";
 import { getDb } from "./src/db/index.js";
 import { runSeed } from "./src/db/seed.js";
 import * as schema from "./src/db/schema.js";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { eq, and, or, ilike, desc, sql, inArray, like } from "drizzle-orm";
 
 dotenv.config();
+
+// S3 Storage Configuration
+const s3Client = process.env.LIARA_ENDPOINT ? new S3Client({
+  region: "default",
+  endpoint: process.env.LIARA_ENDPOINT,
+  credentials: {
+    accessKeyId: process.env.LIARA_ACCESS_KEY || "",
+    secretAccessKey: process.env.LIARA_SECRET_KEY || ""
+  }
+}) : null;
+
 
 // Ensure db gets initialized and seeded safely
 async function initializeApp() {
@@ -52,6 +64,35 @@ app.post("/api/upload", async (req, res) => {
       return res
         .status(400)
         .json({ success: false, error: "تصویری ارسال نشده است." });
+    }
+
+    if (s3Client && process.env.LIARA_BUCKET_NAME) {
+      // Parse base64
+      const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+         return res.status(400).json({ success: false, error: "فرمت تصویر نامعتبر است." });
+      }
+      
+      const contentType = matches[1];
+      const buffer = Buffer.from(matches[2], 'base64');
+      const extension = contentType.split('/')[1] || 'jpg';
+      const fileName = `uploads/${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${extension}`;
+
+      await s3Client.send(new PutObjectCommand({
+        Bucket: process.env.LIARA_BUCKET_NAME,
+        Key: fileName,
+        Body: buffer,
+        ContentType: contentType,
+        ACL: 'public-read' // Assumes Liara bucker supports public read ACL
+      }));
+
+      // Construct the public URL
+      const endpoint = process.env.LIARA_ENDPOINT || "";
+      const bucketUrl = endpoint.startsWith("https://") 
+          ? `https://${process.env.LIARA_BUCKET_NAME}.${endpoint.replace("https://", "")}`
+          : `${endpoint}/${process.env.LIARA_BUCKET_NAME}`;
+          
+      return res.json({ success: true, url: `${bucketUrl}/${fileName}` });
     }
 
     // Since Vercel is a read-only filesystem, we will just return the base64 string
