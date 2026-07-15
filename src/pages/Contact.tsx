@@ -127,7 +127,7 @@ export default function Contact() {
           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl -z-10" />
           
           <div className="space-y-2 text-center sm:text-right">
-            <h3 className="text-lg font-bold">پیوستن به شبکه‌های اجتماعی Modern Home</h3>
+            <h3 className="text-lg font-bold">پیوستن به شبکه‌های اجتماعی خانه مبل</h3>
             <p className="text-stone-400 text-xs font-light">جدیدترین نمونه کارها، مبلمان‌های حراجی و آفی‌های دوره‌ای نمایشگاه‌ها را در کانال‌های زیر دنبال کنید.</p>
           </div>
 
@@ -144,7 +144,7 @@ export default function Contact() {
                 <Instagram className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <span className="font-bold text-sm block">اینستاگرام Modern Home</span>
+                <span className="font-bold text-sm block">اینستاگرام خانه مبل</span>
                 <span className="text-[10px] text-stone-400 font-mono block">@{instagram}</span>
               </div>
               <span className="text-[10px] text-pink-400 flex items-center gap-1 mt-1 font-semibold group-hover:underline">

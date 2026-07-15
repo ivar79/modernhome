@@ -130,7 +130,7 @@ function AdminWorkspaceLayout() {
               MH
             </div>
             <div className="text-right leading-none space-y-1">
-              <h2 className="text-xs font-extrabold text-stone-50">پنل Modern Home (MH)</h2>
+              <h2 className="text-xs font-extrabold text-stone-50">پنل خانه مبل (MH)</h2>
               <span className="text-[10px] text-stone-400 font-light block">سیستم واسطه‌گری دکور</span>
             </div>
           </div>
@@ -201,7 +201,7 @@ function AdminWorkspaceLayout() {
           >
             <Menu className="w-6 h-6" />
           </button>
-          <span className="text-xs font-bold">پنل مدیریت Modern Home</span>
+          <span className="text-xs font-bold">پنل مدیریت خانه مبل</span>
           <div className="w-8 h-8 rounded-lg bg-stone-800 flex items-center justify-center text-[10px] font-sans">
             ADM
           </div>

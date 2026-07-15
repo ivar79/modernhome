@@ -11,17 +11,17 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-5 space-y-8 flex flex-col items-center md:items-start text-center md:text-right">
             <span className="font-bold text-3xl tracking-tight text-stone-900">
-              Modern Home
+              خانه مبل
             </span>
             <p className="text-sm text-stone-500 leading-relaxed max-w-sm font-light">
-              Modern Home؛ تجلی هنر و مهندسی در خلق فضاهای زیستی. 
+              خانه مبل؛ تجلی هنر و مهندسی در خلق فضاهای زیستی. 
               ما مجموعه‌ای از برترین طراحی‌های مبلمان لوکس را برای شما گردآوری کرده‌ایم.
             </p>
           </div>
 
           {/* Visit Us */}
           <div className="md:col-span-4 space-y-6 flex flex-col items-center md:items-start text-center md:text-right">
-            <h4 className="text-xs font-semibold tracking-widest text-stone-900 uppercase">بازدید از Modern Home</h4>
+            <h4 className="text-xs font-semibold tracking-widest text-stone-900 uppercase">بازدید از خانه مبل</h4>
             <ul className="space-y-4 text-sm text-stone-500 font-light">
               <li className="flex flex-col md:flex-row gap-3 items-center md:items-start">
                 <MapPin className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
@@ -72,7 +72,7 @@ export default function Footer() {
 
         {/* Footer bottom */}
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-stone-400 gap-4 font-light">
-          <p>© {new Date().getFullYear()} گالری مبلمان Modern Home. تمامی حقوق محفوظ است.</p>
+          <p>© {new Date().getFullYear()} گالری مبلمان خانه مبل. تمامی حقوق محفوظ است.</p>
         </div>
 
       </div>

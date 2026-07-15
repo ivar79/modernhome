@@ -501,7 +501,7 @@ export default function ProductDetail() {
                   <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto" />
                   <h4 className="text-sm font-extrabold text-stone-50">بسته طلایی و تخفیف ۵٪ شما رزرو شد!</h4>
                   <p className="text-stone-300 text-xs font-light leading-relaxed">
-                    با تشکر از ثبت هوشمندانه درخواست در پلتفرم واسطه‌گری <span className="font-semibold text-stone-50">Modern Home</span>.<br />
+                    با تشکر از ثبت هوشمندانه درخواست در پلتفرم واسطه‌گری <span className="font-semibold text-stone-50">خانه مبل</span>.<br />
                     تخفیف انحصاری ۵٪، بن مشاوره دکوراسیون و گارانتی کاربری مهندسی متریال مبل برای شماره‌ی <span className="font-bold underline text-stone-100">{customerPhone}</span> قفل شد. کارشناسان ما ظرف ۲۴ ساعت آینده با شما تماس خواهند گرفت.
                   </p>
                   <button

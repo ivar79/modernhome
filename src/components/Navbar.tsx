@@ -78,10 +78,13 @@ export default function Navbar() {
           <div className="flex items-center gap-12">
             <Link to="/" className="flex items-center gap-3 group">
               {settings.site_logo ? (
-                <img src={settings.site_logo} alt="Modern Home Logo" className="h-8 object-contain" />
+                <>
+                  <img src={settings.site_logo} alt="Khane Mobl Logo" className="h-8 object-contain" />
+                  <span className={`font-bold text-xl transition-colors ${isDarkBg ? 'text-white' : 'text-stone-900'}`}>Khane Mobl</span>
+                </>
               ) : (
                 <span className={`font-bold text-2xl transition-colors ${isDarkBg ? 'text-white' : 'text-stone-900'}`}>
-                  Modern Home
+                  Khane Mobl
                 </span>
               )}
             </Link>

@@ -437,7 +437,7 @@ export default function CustomerClub() {
               </div>
               
               <div className="space-y-2">
-                <h2 className="text-xl font-extrabold text-stone-900 dark:text-stone-50">باشگاه و پیگیری سفارشات ویژه Modern Home</h2>
+                <h2 className="text-xl font-extrabold text-stone-900 dark:text-stone-50">باشگاه و پیگیری سفارشات ویژه خانه مبل</h2>
                 <p className="text-xs text-stone-400 dark:text-stone-400 font-light leading-relaxed">
                   سریع‌ترین سیستم رهگیری فرآیند ساخت مبل در کارگاه، مشاهده امتیازات دکوراسیون و دسترسی به باشگاه تخفیف انحصاری ۵٪
                 </p>
@@ -686,7 +686,7 @@ export default function CustomerClub() {
                       <h2 className="text-lg font-extrabold">{customerData.name}</h2>
                       {customerData.isVip && (
                         <span className="text-[9px] bg-amber-400 text-stone-950 font-extrabold px-2 py-0.5 rounded-md uppercase">
-                          VIP الیت Modern Home
+                          VIP الیت خانه مبل
                         </span>
                       )}
                     </div>
@@ -867,7 +867,7 @@ export default function CustomerClub() {
                       </div>
                       <h4 className="text-xs font-extrabold">تخفیف انحصاری ۵٪ دکور</h4>
                       <p className="text-[11px] text-stone-400 font-light leading-relaxed">
-                        عضویت شما در کلوپ Modern Home به صورت مادام‌العمر باعث محاسبه ۵٪ ارزان‌تر فاکتور روی هر نوع مبلمانی از فیزیک تمام گالری‌ها می‌شود.
+                        عضویت شما در کلوپ خانه مبل به صورت مادام‌العمر باعث محاسبه ۵٪ ارزان‌تر فاکتور روی هر نوع مبلمانی از فیزیک تمام گالری‌ها می‌شود.
                       </p>
                     </div>
 
@@ -897,7 +897,7 @@ export default function CustomerClub() {
                       </div>
                       <h4 className="text-xs font-extrabold">مشاوره دکوراسیون ۳بعدی رایگان</h4>
                       <p className="text-[11px] text-stone-400 font-light leading-relaxed">
-                        دیزاینرهای الیت Modern Home چیدمان شما را با کالیته کاندید شده به صورت رندرهای دیجیتالی منطبق با ابعاد منزل شما بازطراحی می‌کنند.
+                        دیزاینرهای الیت خانه مبل چیدمان شما را با کالیته کاندید شده به صورت رندرهای دیجیتالی منطبق با ابعاد منزل شما بازطراحی می‌کنند.
                       </p>
                     </div>
 
@@ -935,7 +935,7 @@ export default function CustomerClub() {
                           لینک اختصاصی به اشتراک‌گذاری و معرفی کلوپ الیت مبل
                         </h3>
                         <p className="text-xs text-stone-400 font-light leading-relaxed">
-                          دوستان و همکاران خود را به Modern Home معرفی کنید. هم دوست معرفی شده شما از <strong className="text-emerald-500">تخفیف نقدی ارجاعی دکوراسیون</strong> بهره‌مند می‌شود و هم به پاس اعتماد شما، <strong className="text-emerald-500">مبلغ ۲۵۰,۰۰۰ تومان اعتبار کسر از فاکتور</strong> برای خریدهای بعدی یا تسویه‌های دکور به حساب شما واریز خواهد شد!
+                          دوستان و همکاران خود را به خانه مبل معرفی کنید. هم دوست معرفی شده شما از <strong className="text-emerald-500">تخفیف نقدی ارجاعی دکوراسیون</strong> بهره‌مند می‌شود و هم به پاس اعتماد شما، <strong className="text-emerald-500">مبلغ ۲۵۰,۰۰۰ تومان اعتبار کسر از فاکتور</strong> برای خریدهای بعدی یا تسویه‌های دکور به حساب شما واریز خواهد شد!
                         </p>
                       </div>
 

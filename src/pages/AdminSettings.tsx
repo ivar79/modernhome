@@ -241,7 +241,7 @@ export default function AdminSettings() {
       <div className="flex justify-between items-center bg-white p-6 rounded-2xl border border-stone-200/60 shadow-sm">
         <div className="text-right space-y-1">
           <h1 className="text-xl font-extrabold text-stone-900">تنظیمات اصلی سایت</h1>
-          <p className="text-xs text-stone-400">اطلاعات برگه درباره ما، جزییات فیزیکی و لینک مستقیم به شبکه‌های اجتماعی Modern Home را مدیریت کنید.</p>
+          <p className="text-xs text-stone-400">اطلاعات برگه درباره ما، جزییات فیزیکی و لینک مستقیم به شبکه‌های اجتماعی خانه مبل را مدیریت کنید.</p>
         </div>
         <div className="p-3 bg-stone-100 rounded-xl text-stone-900">
           <Sofa className="w-6 h-6" />
@@ -266,20 +266,48 @@ export default function AdminSettings() {
           <span>امنیت ورود مدیر سیستم</span>
         </h3>
         
-        <div className="bg-emerald-50 text-emerald-800 p-4 rounded-xl text-xs font-medium leading-relaxed border border-emerald-100/50 flex flex-col gap-2">
-          <div className="flex items-center gap-2 font-bold text-sm">
-            <Key className="w-4 h-4" />
-            <span>ورود امن و یکپارچه با حساب گوگل</span>
+        <form onSubmit={handlePasswordChange} className="space-y-4 pt-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1" htmlFor="currentPassword">
+                رمز عبور فعلی
+              </label>
+              <input
+                id="currentPassword"
+                type="password"
+                value={passwords.current}
+                onChange={(e) => setPasswords(prev => ({ ...prev, current: e.target.value }))}
+                className="w-full border border-stone-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-left"
+                dir="ltr"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1" htmlFor="newPassword">
+                رمز عبور جدید
+              </label>
+              <input
+                id="newPassword"
+                type="password"
+                value={passwords.new}
+                onChange={(e) => setPasswords(prev => ({ ...prev, new: e.target.value }))}
+                className="w-full border border-stone-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500 text-left"
+                dir="ltr"
+                required
+              />
+            </div>
           </div>
-          <p>
-            سیستم احراز هویت شما اکنون به صورت کاملاً امن به سرویس احراز هویت گوگل (Google OAuth 2.0) متصل شده است و تنها آدرس <strong>iska1398@gmail.com</strong> اجازه ورود به این پنل را دارد.
-          </p>
-          <ul className="list-disc pl-5 pr-5 mt-1 space-y-1 text-emerald-700/80">
-            <li>نیازی به تغییر دوره‌ای رمز عبور ندارید.</li>
-            <li>امنیت لاگین توسط سرورهای قدرتمند گوگل تضمین شده است.</li>
-            <li>حملات حدس رمز عبور (Brute-Force) در این حالت امکان‌پذیر نیست.</li>
-          </ul>
-        </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={saving}
+              className="flex items-center gap-2 py-2 px-6 rounded-xl text-sm font-bold text-white bg-stone-900 hover:bg-stone-800 transition-all disabled:opacity-50"
+            >
+              {saving ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+              تغییر رمز عبور
+            </button>
+          </div>
+        </form>
       </div>
 {/* VIP Security */}
       <div className="bg-white p-6 rounded-2xl border border-stone-200/60 shadow-sm space-y-5">
@@ -345,7 +373,7 @@ export default function AdminSettings() {
                   <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
                 </label>
               </div>
-              <p className="text-[10px] text-stone-400">در صورت خالی بودن، متن Modern Home نمایش داده می‌شود.</p>
+              <p className="text-[10px] text-stone-400">در صورت خالی بودن، متن خانه مبل نمایش داده می‌شود.</p>
             </div>
 
             <div className="space-y-2">
@@ -387,7 +415,7 @@ export default function AdminSettings() {
         <div className="bg-white p-6 rounded-2xl border border-stone-200/60 shadow-sm space-y-5">
           <h3 className="text-sm font-bold text-stone-900 border-b border-stone-100 pb-3 flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-amber-500 rounded-full" />
-            <span>تنظیمات برگه «درباره ما» (Modern Home)</span>
+            <span>تنظیمات برگه «درباره ما» (خانه مبل)</span>
           </h3>
 
           <div className="grid grid-cols-1 gap-4">
@@ -399,7 +427,7 @@ export default function AdminSettings() {
                 value={settings.about_title}
                 onChange={handleChange}
                 className="w-full text-xs font-medium border border-stone-200 p-3 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-950/25 transition-all text-right"
-                placeholder="مثال: درباره گالری مبلمان Modern Home"
+                placeholder="مثال: درباره گالری مبلمان خانه مبل"
               />
             </div>
 
@@ -486,7 +514,7 @@ export default function AdminSettings() {
         <div className="bg-white p-6 rounded-2xl border border-stone-200/60 shadow-sm space-y-5">
           <h3 className="text-sm font-bold text-stone-900 border-b border-stone-100 pb-3 flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full" />
-            <span>اتصال شبکه‌های اجتماعی Modern Home</span>
+            <span>اتصال شبکه‌های اجتماعی خانه مبل</span>
           </h3>
 
           <p className="text-stone-400 text-[10px] leading-relaxed">
