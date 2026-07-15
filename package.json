@@ -22,10 +22,12 @@
     "@react-three/postprocessing": "^3.0.4",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.21",
     "axios": "^1.18.1",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.2",
+    "esbuild": "^0.25.0",
     "express": "^4.21.2",
     "express-rate-limit": "^8.5.2",
     "google-auth-library": "^10.9.0",
@@ -39,8 +41,10 @@
     "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.18.0",
     "recharts": "^3.8.1",
+    "tailwindcss": "^4.1.14",
     "three": "^0.185.1",
     "three-stdlib": "^2.36.1",
+    "typescript": "~5.8.2",
     "vite": "^6.2.3"
   },
   "devDependencies": {
@@ -50,12 +54,7 @@
     "@types/node": "^22.14.0",
     "@types/pg": "^8.20.0",
     "@types/three": "^0.185.0",
-    "autoprefixer": "^10.4.21",
     "drizzle-kit": "^0.31.10",
-    "esbuild": "^0.25.0",
-    "tailwindcss": "^4.1.14",
-    "tsx": "^4.21.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.3"
+    "tsx": "^4.21.0"
   }
 }
