@@ -88,9 +88,10 @@ app.post("/api/upload", async (req, res) => {
 
       // Construct the public URL
       const endpoint = process.env.LIARA_ENDPOINT || "";
-      const bucketUrl = endpoint.startsWith("https://") 
-          ? `https://${process.env.LIARA_BUCKET_NAME}.${endpoint.replace("https://", "")}`
-          : `${endpoint}/${process.env.LIARA_BUCKET_NAME}`;
+      const publicEndpoint = endpoint.replace(".space", ".site");
+      const bucketUrl = publicEndpoint.startsWith("https://") 
+          ? `https://${process.env.LIARA_BUCKET_NAME}.${publicEndpoint.replace("https://", "")}`
+          : `${publicEndpoint}/${process.env.LIARA_BUCKET_NAME}`;
           
       return res.json({ success: true, url: `${bucketUrl}/${fileName}` });
     }
