@@ -60,7 +60,10 @@ export default function Home() {
   }, [heroImages.length]);
 
   return (
-    <div className="bg-stone-50 min-h-screen text-stone-900 pb-20">
+    <div 
+      className="bg-stone-50 min-h-screen text-stone-900 pb-20 bg-cover bg-fixed bg-center"
+      style={settings.site_background ? { backgroundImage: `url(${settings.site_background})` } : {}}
+    >
       
       {/* 1. Hero Section */}
       <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-stone-900">

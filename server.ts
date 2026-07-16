@@ -61,49 +61,59 @@ app.post("/api/upload", async (req, res) => {
   try {
     const { image, name } = req.body;
     if (!image) {
-      return res
-        .status(400)
-        .json({ success: false, error: "تصویری ارسال نشده است." });
+      return res.status(400).json({ success: false, error: "تصویری ارسال نشده است." });
     }
+
+    const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+      // If it's already a URL or invalid base64, return it as is.
+      return res.json({ success: true, url: image });
+    }
+    
+    const contentType = matches[1];
+    const base64Data = matches[2];
+    const buffer = Buffer.from(base64Data, 'base64');
+    const extension = contentType.split('/')[1] || 'jpg';
+    const fileName = `uploads/${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${extension}`;
 
     if (s3Client && process.env.LIARA_BUCKET_NAME) {
-      // Parse base64
-      const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-      if (!matches || matches.length !== 3) {
-         return res.status(400).json({ success: false, error: "فرمت تصویر نامعتبر است." });
+      try {
+        await s3Client.send(new PutObjectCommand({
+          Bucket: process.env.LIARA_BUCKET_NAME,
+          Key: fileName,
+          Body: buffer,
+          ContentType: contentType,
+          ACL: 'public-read' 
+        }));
+
+        let endpoint = (process.env.LIARA_ENDPOINT || "").replace(/\/$/, "");
+        let bucketUrl = "";
+        
+        if (endpoint.includes("storage.c2.liara.site")) {
+          const cleanEndpoint = endpoint.replace(/^https?:\/\//, "");
+          bucketUrl = `https://${process.env.LIARA_BUCKET_NAME}.${cleanEndpoint}`;
+        } else if (endpoint.includes("liara.run")) {
+          bucketUrl = endpoint.replace("://", `://${process.env.LIARA_BUCKET_NAME}.`);
+        } else {
+          bucketUrl = `${endpoint}/${process.env.LIARA_BUCKET_NAME}`;
+        }
+            
+        console.log(`Successfully uploaded to S3: ${fileName}`);
+        return res.json({ success: true, url: `${bucketUrl}/${fileName}` });
+      } catch (s3Error: any) {
+        console.error("S3 upload failed:", s3Error);
+        console.log("Falling back to raw base64 due to S3 failure.");
       }
-      
-      const contentType = matches[1];
-      const buffer = Buffer.from(matches[2], 'base64');
-      const extension = contentType.split('/')[1] || 'jpg';
-      const fileName = `uploads/${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${extension}`;
-
-      await s3Client.send(new PutObjectCommand({
-        Bucket: process.env.LIARA_BUCKET_NAME,
-        Key: fileName,
-        Body: buffer,
-        ContentType: contentType,
-        ACL: 'public-read' // Assumes Liara bucker supports public read ACL
-      }));
-
-      // Construct the public URL
-      const endpoint = process.env.LIARA_ENDPOINT || "";
-      const publicEndpoint = endpoint.replace(".space", ".site");
-      const bucketUrl = publicEndpoint.startsWith("https://") 
-          ? `https://${process.env.LIARA_BUCKET_NAME}.${publicEndpoint.replace("https://", "")}`
-          : `${publicEndpoint}/${process.env.LIARA_BUCKET_NAME}`;
-          
-      return res.json({ success: true, url: `${bucketUrl}/${fileName}` });
+    } else {
+      console.log("S3 not configured. Using raw base64 fallback.");
     }
 
-    // Since Vercel is a read-only filesystem, we will just return the base64 string
-    // to be stored directly in the database.
+    // Always fallback to raw base64 if no S3. No local filesystem writes.
+    // Local filesystem on serverless/Liara gets wiped, causing broken images.
     return res.json({ success: true, url: image });
   } catch (error: any) {
     console.error("Upload error on backend:", error);
-    return res
-      .status(500)
-      .json({ success: false, error: "خطا در بارگذاری تصویر." });
+    return res.status(500).json({ success: false, error: "خطا در بارگذاری تصویر." });
   }
 });
 
@@ -2067,6 +2077,7 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   bale: "@modern_home",
   hero_images: "",
   site_logo: "/khane_mobl_logo.jpg",
+  site_background: "",
 };
 
 let inMemorySettings: Record<string, string> = { ...DEFAULT_SETTINGS };

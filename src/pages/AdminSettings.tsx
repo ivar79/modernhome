@@ -379,13 +379,81 @@ export default function AdminSettings() {
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-stone-500 block flex items-center gap-1">
                 <Image className="w-3.5 h-3.5" />
+                <span>تصویر پس‌زمینه سایت (بک‌گراند کلی)</span>
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  name="site_background"
+                  value={settings.site_background || ""}
+                  onChange={handleChange}
+                  className="w-full text-xs font-mono border border-stone-200 p-3 rounded-xl bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-stone-950/25 transition-all text-left"
+                  placeholder="لینک تصویر پس‌زمینه"
+                  dir="ltr"
+                />
+                <label className="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-3 rounded-xl cursor-pointer text-xs font-bold transition-all whitespace-nowrap flex items-center shrink-0">
+                  آپلود عکس
+                  <input type="file" accept="image/*" onChange={async (e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      const file = e.target.files[0];
+                      const reader = new FileReader();
+                      reader.onloadend = async () => {
+                        try {
+                          const res = await fetch("/api/upload", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ image: reader.result, name: file.name })
+                          });
+                          const data = await res.json();
+                          if (data.success) {
+                            setSettings(prev => ({ ...prev, site_background: data.url }));
+                          } else {
+                            alert("خطا در آپلود عکس: " + (data.error || ""));
+                          }
+                        } catch(err) {
+                          alert("خطا در ارتباط با سرور برای آپلود.");
+                        }
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }} className="hidden" />
+                </label>
+              </div>
+              <p className="text-[10px] text-stone-400">تصویر پس‌زمینه کل سایت که پشت محتوا نمایش داده می‌شود.</p>
+              
+              {settings.site_background && (
+                <div className="mt-3 relative w-32 h-20 rounded-lg overflow-hidden border border-stone-200 shadow-sm">
+                  <img src={settings.site_background} alt="Background Preview" className="w-full h-full object-cover" />
+                  <button 
+                    type="button" 
+                    onClick={() => setSettings(prev => ({ ...prev, site_background: "" }))}
+                    className="absolute top-1 right-1 bg-white/80 hover:bg-white p-1 rounded-full text-red-500 shadow-sm transition-all"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[11px] font-bold text-stone-500 block flex items-center gap-1">
+                <Image className="w-3.5 h-3.5" />
                 <span>تصاویر پس‌زمینه اصلی سایت (گالری صفحه اصلی)</span>
               </label>
               <div className="flex flex-col gap-3">
                 <div className="flex flex-wrap gap-3 w-full">
                   {(settings.hero_images ? settings.hero_images.split(',').map((s:string) => s.trim()).filter(Boolean) : []).map((img:string, idx:number) => (
                     <div key={idx} className="relative group w-24 h-24 rounded-lg overflow-hidden border border-stone-200 shadow-sm">
-                      <img src={img} alt={`Hero ${idx}`} className="w-full h-full object-cover" />
+                      <img 
+                        src={img} 
+                        alt={`Hero ${idx}`} 
+                        className="w-full h-full object-cover" 
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=80";
+                        }}
+                      />
                       <button 
                         type="button" 
                         onClick={() => {

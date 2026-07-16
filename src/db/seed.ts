@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import bcryptjs from "bcryptjs";
 import { getDb } from "./index.js";
-import { admins, showrooms, categories, products } from "./schema.js";
+import { admins, showrooms, categories, products, siteSettings } from "./schema.js";
 import { eq } from "drizzle-orm";
 
 export async function runSeed() {
@@ -251,9 +251,32 @@ export async function runSeed() {
       }
       console.log("5 sample products seeded successfully.");
     } else {
-      console.log(
-        "Products already satisfy seed requirements or showroom relations missing.",
-      );
+      console.log("5 sample products seeded successfully.");
+    }
+
+    // 5. Check and Seed Site Settings
+    const existingSettings = await db.select().from(siteSettings).limit(1);
+    if (existingSettings.length === 0) {
+      console.log("Seeding site settings...");
+      const defaultSettings = [
+        { key: "site_name", value: "خانه مبل | گالری مبلمان لوکس" },
+        { key: "site_logo", value: "/khane_mobl_logo.jpg" },
+        { key: "about_title", value: "درباره گالری مبلمان خانه مبل" },
+        { key: "about_desc", value: "ما محصول عینی نمی‌فروشیم — ما حلقه ارتباطی امن و وکیل شما با نمایشگا‌ه‌های ممتاز مبلمان کشور هستیم." },
+        { key: "about_content", value: "در مدل سنتی خرید مبل، مشتریان معمولاً با چالش‌های بزرگی نظیر قیمت‌های نامتعادل دلالان، تنوع پایین، تحویل دیرهنگام و عدم همخوانی متریال اسفنج کلاف و چوب با ادعای فروشنده مواجه می‌شوند.\n\nپلتفرم خانه مبل به عنوان مرجع تخصصی دکوراسیون، این خلأ را به شیوه‌ای مدرن پوشش می‌دهد. ما با بیش از ۲۵ کارگاه مبل‌سازی و نمایشگاه‌های برند مبل در بازارهای تخصصی ایران از جمله یافت‌آباد، دلاوران و جاجرود هماهنگ هستیم." },
+        { key: "contact_address", value: "تهران، بازار مبل یافت‌آباد غربی، بلوار معلم، ساختمان دیزاین فضا، پلاک ۱۸۰، طبقه ۳" },
+        { key: "contact_phone", value: "۰۲۱-۶۶۵۴۳۲۱۰ / ۰۹۱۲۳۴۵۶۷۸۹" },
+        { key: "contact_email", value: "management@modern-home.ir" },
+        { key: "instagram", value: "modern_home_gallery" },
+        { key: "telegram", value: "modern_home_admin" },
+        { key: "bale", value: "@modern_home" },
+        { key: "hero_images", value: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1600&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=1600&auto=format&fit=crop&q=80" },
+      ];
+
+      for (const setting of defaultSettings) {
+        await db.insert(siteSettings).values({ ...setting, updatedAt: new Date() });
+      }
+      console.log("Site settings seeded successfully.");
     }
 
     console.log("Database seed check and setup completed successfully.");

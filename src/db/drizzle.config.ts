@@ -22,5 +22,16 @@ export default defineConfig({
   dbCredentials: {
     url: databaseUrl,
   },
+  tablesFilter: [
+    "showrooms",
+    "categories",
+    "products",
+    "orders",
+    "commissions",
+    "admins",
+    "site_settings",
+    "customer_connections",
+    "otps"
+  ],
   verbose: true,
 });
