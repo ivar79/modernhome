@@ -95,6 +95,8 @@ export default function AdminSettings() {
     } else {
       setStatus({ type: "error", message: "خطا در آپلود لوگو" });
     }
+    
+    e.target.value = '';
   };
 
   const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,13 +111,18 @@ export default function AdminSettings() {
     }
     
     if (uploadedUrls.length > 0) {
-      const currentList = settings.hero_images ? settings.hero_images.split(",").map((s:string) => s.trim()).filter(Boolean) : [];
-      const newList = [...currentList, ...uploadedUrls].join(", ");
-      setSettings(prev => ({ ...prev, hero_images: newList }));
+      setSettings((prev: any) => {
+        const currentList = prev.hero_images ? prev.hero_images.split(",").map((s:string) => s.trim()).filter(Boolean) : [];
+        const newList = [...currentList, ...uploadedUrls].join(", ");
+        return { ...prev, hero_images: newList };
+      });
       setStatus({ type: "success", message: "تصاویر با موفقیت آپلود شدند." });
     } else {
       setStatus({ type: "error", message: "خطا در آپلود تصاویر" });
     }
+    
+    // Reset file input so the same file can be selected again
+    e.target.value = '';
   };
 
   const handlePasswordChange = async (e: React.FormEvent) => {
@@ -396,26 +403,14 @@ export default function AdminSettings() {
                   <input type="file" accept="image/*" onChange={async (e) => {
                     if (e.target.files && e.target.files[0]) {
                       const file = e.target.files[0];
-                      const reader = new FileReader();
-                      reader.onloadend = async () => {
-                        try {
-                          const res = await fetch("/api/upload", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ image: reader.result, name: file.name })
-                          });
-                          const data = await res.json();
-                          if (data.success) {
-                            setSettings(prev => ({ ...prev, site_background: data.url }));
-                          } else {
-                            alert("خطا در آپلود عکس: " + (data.error || ""));
-                          }
-                        } catch(err) {
-                          alert("خطا در ارتباط با سرور برای آپلود.");
-                        }
-                      };
-                      reader.readAsDataURL(file);
+                      const url = await uploadImage(file);
+                      if (url) {
+                        setSettings(prev => ({ ...prev, site_background: url }));
+                      } else {
+                        alert("خطا در آپلود عکس پس‌زمینه.");
+                      }
                     }
+                    e.target.value = '';
                   }} className="hidden" />
                 </label>
               </div>
@@ -449,10 +444,6 @@ export default function AdminSettings() {
                         alt={`Hero ${idx}`} 
                         className="w-full h-full object-cover" 
                         referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=80";
-                        }}
                       />
                       <button 
                         type="button" 

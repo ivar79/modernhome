@@ -84,10 +84,6 @@ export default function Navbar() {
                     alt="Khane Mobl Logo" 
                     className="h-8 object-contain" 
                     referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/khane_mobl_logo.jpg";
-                    }}
                   />
                   <span className={`font-bold text-xl transition-colors ${isDarkBg ? 'text-white' : 'text-stone-900'}`}>Khane Mobl</span>
                 </>

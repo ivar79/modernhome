@@ -4,6 +4,12 @@
   --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
 }
 
+@layer base {
+  html {
+    @apply overflow-y-scroll;
+  }
+}
+
 @layer utilities {
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }

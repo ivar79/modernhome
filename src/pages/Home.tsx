@@ -11,6 +11,7 @@ export default function Home() {
   const [settings, setSettings] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [heroImageIndex, setHeroImageIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     // Scroll to top
@@ -59,6 +60,14 @@ export default function Home() {
     }
   }, [heroImages.length]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-stone-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-stone-50"></div>
+      </div>
+    );
+  }
+
   return (
     <div 
       className="bg-stone-50 min-h-screen text-stone-900 pb-20 bg-cover bg-fixed bg-center"
@@ -73,8 +82,9 @@ export default function Home() {
               key={idx}
               src={img}
               alt="Luxury Sofa"
+              onLoad={() => setLoadedImages(prev => ({ ...prev, [idx]: true }))}
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-                idx === heroImageIndex ? "opacity-60" : "opacity-0"
+                idx === heroImageIndex && loadedImages[idx] ? "opacity-60" : "opacity-0"
               }`}
               referrerPolicy="no-referrer"
             />
@@ -85,8 +95,8 @@ export default function Home() {
         <div 
           className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-8 select-none transition-opacity duration-1000"
           style={{ 
-            opacity: heroImageIndex === 0 ? 1 : 0,
-            pointerEvents: heroImageIndex === 0 ? "auto" : "none"
+            opacity: 1,
+            pointerEvents: "auto"
           }}
         >
           <motion.div

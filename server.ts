@@ -11,7 +11,7 @@ import { JWT_SECRET } from "./src/middleware.js";
 import { getDb } from "./src/db/index.js";
 import { runSeed } from "./src/db/seed.js";
 import * as schema from "./src/db/schema.js";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { eq, and, or, ilike, desc, sql, inArray, like } from "drizzle-orm";
 
 dotenv.config();
@@ -87,19 +87,9 @@ app.post("/api/upload", async (req, res) => {
         }));
 
         let endpoint = (process.env.LIARA_ENDPOINT || "").replace(/\/$/, "");
-        let bucketUrl = "";
         
-        if (endpoint.includes("storage.c2.liara.site")) {
-          const cleanEndpoint = endpoint.replace(/^https?:\/\//, "");
-          bucketUrl = `https://${process.env.LIARA_BUCKET_NAME}.${cleanEndpoint}`;
-        } else if (endpoint.includes("liara.run")) {
-          bucketUrl = endpoint.replace("://", `://${process.env.LIARA_BUCKET_NAME}.`);
-        } else {
-          bucketUrl = `${endpoint}/${process.env.LIARA_BUCKET_NAME}`;
-        }
-            
         console.log(`Successfully uploaded to S3: ${fileName}`);
-        return res.json({ success: true, url: `${bucketUrl}/${fileName}` });
+        return res.json({ success: true, url: `/api/image/${fileName}` });
       } catch (s3Error: any) {
         console.error("S3 upload failed:", s3Error);
         console.log("Falling back to raw base64 due to S3 failure.");
@@ -115,6 +105,43 @@ app.post("/api/upload", async (req, res) => {
     console.error("Upload error on backend:", error);
     return res.status(500).json({ success: false, error: "خطا در بارگذاری تصویر." });
   }
+});
+
+// Image Proxy Endpoint
+app.get("/api/image/*", async (req, res) => {
+  const key = req.params[0];
+  if (!key) return res.status(404).send("Not found");
+  
+  if (s3Client && process.env.LIARA_BUCKET_NAME) {
+    try {
+      const command = new GetObjectCommand({
+        Bucket: process.env.LIARA_BUCKET_NAME,
+        Key: key
+      });
+      const response = await s3Client.send(command);
+      
+      if (response.ContentType) res.setHeader("Content-Type", response.ContentType);
+      if (response.ContentLength) res.setHeader("Content-Length", response.ContentLength);
+      
+      if (response.Body) {
+        // AWS SDK v3 Body is a stream in Node.js
+        (response.Body as any).pipe(res);
+        return;
+      }
+    } catch (error: any) {
+      if (error.name !== 'NoSuchKey') {
+        console.error(`S3 proxy error for ${key}:`, error);
+      }
+    }
+  }
+  
+  // Fallback to local
+  const localPath = path.join(process.cwd(), key);
+  if (fs.existsSync(localPath)) {
+    return res.sendFile(localPath);
+  }
+  
+  return res.status(404).send("Image not found");
 });
 
 // Simplistic robust Tokenless Admin auth endpoint for AI Studio Preview

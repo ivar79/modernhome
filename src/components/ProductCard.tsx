@@ -42,10 +42,6 @@ export default function ProductCard({ product, showroomName, categoryName, onCom
           alt={product.name}
           className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           referrerPolicy="no-referrer"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&auto=format&fit=crop&q=80";
-          }}
         />
         
         {/* Wishlist Button */}
